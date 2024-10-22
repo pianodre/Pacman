@@ -3,6 +3,11 @@ package pacman.model.factories;
 import javafx.scene.image.Image;
 import pacman.ConfigurationParseException;
 import pacman.model.entity.Renderable;
+import pacman.model.entity.dynamic.MovementStrategy.BlinkyMovementStrategy;
+import pacman.model.entity.dynamic.MovementStrategy.ClydeMovementStrategy;
+import pacman.model.entity.dynamic.MovementStrategy.InkyMovementStrategy;
+import pacman.model.entity.dynamic.MovementStrategy.MovementStrategy;
+import pacman.model.entity.dynamic.MovementStrategy.PinkyMovementStrategy;
 import pacman.model.entity.dynamic.ghost.GhostImpl;
 import pacman.model.entity.dynamic.ghost.GhostMode;
 import pacman.model.entity.dynamic.physics.*;
@@ -33,6 +38,14 @@ public class GhostFactory implements RenderableFactory {
             PINKY_IMAGE
     );
 
+    private static final List<String> GHOST_NAMES = Arrays.asList(
+        "Blinky",
+        "Inky",
+        "Clyde",
+        "Pinky"
+    );
+
+
     List<Vector2D> targetCorners = Arrays.asList(
             new Vector2D(0, TOP_Y_POSITION_OF_MAP),
             new Vector2D(RIGHT_X_POSITION_OF_MAP, TOP_Y_POSITION_OF_MAP),
@@ -46,37 +59,49 @@ public class GhostFactory implements RenderableFactory {
     @Override
     public Renderable createRenderable(Vector2D position) {
         try {
-            // Adjust the position slightly for proper placement
-            position = position.add(new Vector2D(4, -4));
+                position = position.add(new Vector2D(4, -4));
 
-            // Get the next ghost image in sequence
-            Image ghostImage = GHOST_IMAGES.get(ghostIndex);
+                Image ghostImage = GHOST_IMAGES.get(ghostIndex);
+                String ghostName = GHOST_NAMES.get(ghostIndex);
 
-            // Increment the index, wrap around if necessary
-            ghostIndex = (ghostIndex + 1) % GHOST_IMAGES.size();
+                ghostIndex = (ghostIndex + 1) % GHOST_IMAGES.size();
 
-            BoundingBox boundingBox = new BoundingBoxImpl(
-                    position,
-                    ghostImage.getHeight(),
-                    ghostImage.getWidth()
-            );
+                BoundingBox boundingBox = new BoundingBoxImpl(
+                        position,
+                        ghostImage.getHeight(),
+                        ghostImage.getWidth()
+                );
 
-            KinematicState kinematicState = new KinematicStateImpl.KinematicStateBuilder()
-                    .setPosition(position)
-                    .build();
+                KinematicState kinematicState = new KinematicStateImpl.KinematicStateBuilder()
+                        .setPosition(position)
+                        .build();
 
-            // Return a new GhostImpl with the selected ghost image
-            return new GhostImpl(
-                    ghostImage,
-                    boundingBox,
-                    kinematicState,
-                    GhostMode.SCATTER,
-                    targetCorners.get(ghostIndex % targetCorners.size())
-            );
+                MovementStrategy movementStrategy = switch (ghostName) {
+                case "Blinky" -> new BlinkyMovementStrategy();
+                case "Pinky" -> new PinkyMovementStrategy();
+                case "Inky" -> new InkyMovementStrategy();
+                case "Clyde" -> new ClydeMovementStrategy();
+                default -> throw new IllegalArgumentException("Unknown ghost name: " + ghostName);
+                };
+
+                GhostImpl ghost = new GhostImpl(
+                        ghostImage,
+                        boundingBox,
+                        kinematicState,
+                        GhostMode.SCATTER,
+                        targetCorners.get(ghostIndex % targetCorners.size()),
+                        movementStrategy // Pass the specific movement strategy
+                );
+
+                ghost.setName(ghostName);
+                System.out.println("Created ghost: " + ghost.getName());
+
+                return ghost;
         } catch (Exception e) {
-            throw new ConfigurationParseException(
-                    String.format("Invalid ghost configuration | %s ", e)
-            );
+                throw new ConfigurationParseException(
+                        String.format("Invalid ghost configuration | %s ", e)
+                );
         }
     }
+
 }
