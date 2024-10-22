@@ -12,7 +12,6 @@ public class InkyFactory implements RenderableFactory {
 
     private static final Image INKY_IMAGE = new Image("maze/ghosts/inky.png");
     private static final int RIGHT_X_POSITION_OF_MAP = 448;
-    private static final int TOP_Y_POSITION_OF_MAP = 16 * 3;
     private static final int BOTTOM_Y_POSITION_OF_MAP = 16 * 34;
 
     private static final Vector2D TARGET_CORNER = new Vector2D(RIGHT_X_POSITION_OF_MAP, BOTTOM_Y_POSITION_OF_MAP);

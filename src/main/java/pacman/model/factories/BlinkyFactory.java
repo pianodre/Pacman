@@ -13,7 +13,6 @@ public class BlinkyFactory implements RenderableFactory {
     private static final Image BLINKY_IMAGE = new Image("maze/ghosts/blinky.png");
     private static final int RIGHT_X_POSITION_OF_MAP = 448;
     private static final int TOP_Y_POSITION_OF_MAP = 16 * 3;
-    private static final int BOTTOM_Y_POSITION_OF_MAP = 16 * 34;
 
     private static final Vector2D TARGET_CORNER = new Vector2D(RIGHT_X_POSITION_OF_MAP, TOP_Y_POSITION_OF_MAP);
 

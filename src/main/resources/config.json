@@ -11,8 +11,8 @@
         "frightened": 1.0
       },
       "modeLengths": {
-        "chase" : 7,
-        "scatter": 20,
+        "chase" : 20,
+        "scatter": 10,
         "frightened": 10
       }
     },
