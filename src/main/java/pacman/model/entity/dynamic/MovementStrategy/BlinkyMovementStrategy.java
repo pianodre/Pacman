@@ -10,3 +10,12 @@ public class BlinkyMovementStrategy implements MovementStrategy {
         System.out.println("Blinky is moving towards Pac-Man at position: " + pacMan.getPosition());
     }
 }
+
+public class BlinkyMovementStrategy implements MovementStrategy {
+    @Override
+    public Vector2D getTargetLocation(GhostImpl ghost, Vector2D playerPosition) {
+        // Blinky's specific chase logic: target is Pac-Man's position
+        System.out.println("Blinky is moving towards Pac-Man at position: " + playerPosition);
+        return playerPosition;
+    }
+}

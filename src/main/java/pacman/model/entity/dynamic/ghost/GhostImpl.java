@@ -60,6 +60,7 @@ public class GhostImpl implements Ghost {
         updateDirection();
         kinematicState.update();
         boundingBox.setTopLeft(kinematicState.getPosition());
+        this.playerPosition = playerPosition;
     }
 
     private void updateDirection() {
@@ -85,12 +86,12 @@ public class GhostImpl implements Ghost {
     }
 
     private Vector2D getTargetLocation() {
-        System.out.println("Player Position updated to: " + playerPosition);
-        return switch (ghostMode) {
-            case CHASE -> playerPosition;
-            case SCATTER -> targetCorner;
-        };
-    }
+    System.out.println("Player Position updated to: " + playerPosition);
+    return switch (ghostMode) {
+        case CHASE -> movementStrategy.getTargetLocation(this, playerPosition);
+        case SCATTER -> targetCorner;
+    };
+}
 
     private Direction selectDirection(Set<Direction> possibleDirections) {
         if (possibleDirections.isEmpty()) {
