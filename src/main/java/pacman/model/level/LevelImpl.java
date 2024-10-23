@@ -82,6 +82,7 @@ public class LevelImpl implements Level {
         this.modeLengths = levelConfigurationReader.getGhostModeLengths();
         // Set up collectables
         this.collectables = new ArrayList<>(maze.getPellets());
+        this.collectables.addAll(maze.getPowerPellets());
 
     }
 
@@ -168,8 +169,10 @@ public class LevelImpl implements Level {
 
     @Override
     public boolean isCollectable(Renderable renderable) {
-        return maze.getPellets().contains(renderable) && ((Collectable) renderable).isCollectable();
+        // Check if the renderable is in the collectables list
+        return (collectables.contains(renderable) && ((Collectable) renderable).isCollectable());
     }
+
 
     @Override
     public void collect(Collectable collectable) {

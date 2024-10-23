@@ -2,51 +2,46 @@ package pacman.model.entity.staticentity.collectable;
 
 import javafx.scene.image.Image;
 import pacman.model.entity.dynamic.physics.BoundingBox;
+import pacman.model.entity.staticentity.StaticEntityImpl;
 
 /**
- * Represents the PowerPellet in Pac-Man game.
- * The collection of a PowerPellet grants temporary power to the player.
+ * Represents the Pellet in Pac-Man game
  */
-public class PowerPellet extends Pellet {
-    private final int duration; // Duration of the power effect
+public class PowerPellet extends StaticEntityImpl implements Collectable {
 
-    public PowerPellet(BoundingBox boundingBox, Layer layer, Image image, int points, int duration) {
-        super(boundingBox, layer, image, points);
-        this.duration = duration;
-    }
+    private final int points;
+    private boolean isCollectable;
 
-    /**
-     * Returns the duration of the power effect granted by this PowerPellet.
-     *
-     * @return Duration in seconds.
-     */
-    public int getDuration() {
-        return duration;
+    public PowerPellet(BoundingBox boundingBox, Layer layer, Image image, int points) {
+        super(boundingBox, layer, image);
+        this.points = points;
+        this.isCollectable = true;
     }
 
     @Override
     public void collect() {
-        System.out.println("Hit Power Pellet");
-        super.collect();
-        // Add additional behavior for collecting a PowerPellet
-        grantPowerToPlayer();  // Implement the effect
+        this.isCollectable = false;
+        setLayer(Layer.INVISIBLE);
     }
 
-    /**
-     * Grants power to the player upon collection of the PowerPellet.
-     * This method should include logic to activate the player's power and manage the duration.
-     */
-    private void grantPowerToPlayer() {
-        // Implement the logic to grant power to the player
-        // Example:
-        // Player player = Game.getPlayer();  // Retrieve the current player instance
-        // player.setInvincible(true);
-        // Schedule a task to revert this after 'duration' seconds
-        // Timer.schedule(new TimerTask() {
-        //     @Override
-        //     public void run() {
-        //         player.setInvincible(false);
-        //     }
-        // }, duration * 1000);  // Convert seconds to milliseconds
+    @Override
+    public void reset() {
+        this.isCollectable = true;
+        setLayer(Layer.BACKGROUND);
+    }
+
+    @Override
+    public boolean isCollectable() {
+        return this.isCollectable;
+    }
+
+    @Override
+    public boolean canPassThrough() {
+        return true;
+    }
+
+    @Override
+    public int getPoints() {
+        return this.points;
     }
 }

@@ -13,13 +13,15 @@ import pacman.model.entity.staticentity.collectable.PowerPellet;
  */
 public class PowerPelletFactory implements RenderableFactory {
     private static final Image POWER_PELLET_IMAGE = new Image("maze/powerPellet.png");
-    private static final int NUM_POINTS = 200; // Adjusted value for PowerPellet
-    private static final int DURATION = 5; // Define the duration for the power effect
+    private static final int NUM_POINTS = 100;
     private final Renderable.Layer layer = Renderable.Layer.BACKGROUND;
 
     @Override
-    public Renderable createRenderable(Vector2D position) {
+    public Renderable createRenderable(
+            Vector2D position
+    ) {
         try {
+
             BoundingBox boundingBox = new BoundingBoxImpl(
                     position,
                     POWER_PELLET_IMAGE.getHeight(),
@@ -30,13 +32,12 @@ public class PowerPelletFactory implements RenderableFactory {
                     boundingBox,
                     layer,
                     POWER_PELLET_IMAGE,
-                    NUM_POINTS,
-                    DURATION // Include the duration parameter
+                    NUM_POINTS
             );
 
         } catch (Exception e) {
             throw new ConfigurationParseException(
-                    String.format("Invalid power pellet configuration | %s", e));
+                    String.format("Invalid pellet configuration | %s", e));
         }
     }
 }

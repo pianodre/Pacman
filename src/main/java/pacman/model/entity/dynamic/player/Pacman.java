@@ -5,6 +5,7 @@ import pacman.model.entity.Renderable;
 import pacman.model.entity.dynamic.physics.*;
 import pacman.model.entity.dynamic.player.observer.PlayerPositionObserver;
 import pacman.model.entity.staticentity.collectable.Collectable;
+import pacman.model.entity.staticentity.collectable.PowerPellet;
 import pacman.model.level.Level;
 
 import java.util.HashSet;
@@ -111,10 +112,19 @@ public class Pacman implements Controllable {
     public void collideWith(Level level, Renderable renderable) {
         if (level.isCollectable(renderable)) {
             Collectable collectable = (Collectable) renderable;
+            
+            // Check the type of collectable and print a corresponding message
+            if (collectable instanceof PowerPellet) {
+                System.out.println("Power Pellet collected: " + collectable.getClass().getSimpleName());
+            } else {
+                System.out.println("Regular Pellet collected: " + collectable.getClass().getSimpleName());
+            }
+            
             level.collect(collectable);
             collectable.collect();
         }
     }
+
 
     @Override
     public boolean collidesWith(Renderable renderable) {
