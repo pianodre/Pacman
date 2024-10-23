@@ -113,7 +113,7 @@ public class Pacman implements Controllable {
         if (level.isCollectable(renderable)) {
             Collectable collectable = (Collectable) renderable;
             
-            // Check the type of collectable and print a corresponding message
+            // Check the type of collectable to print the pellet type
             if (collectable instanceof PowerPellet) {
                 System.out.println("Power Pellet collected: " + collectable.getClass().getSimpleName());
             } else {

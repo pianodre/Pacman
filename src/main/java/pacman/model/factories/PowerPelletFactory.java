@@ -13,7 +13,7 @@ import pacman.model.entity.staticentity.collectable.PowerPellet;
  */
 public class PowerPelletFactory implements RenderableFactory {
     private static final Image POWER_PELLET_IMAGE = new Image("maze/powerPellet.png");
-    private static final int NUM_POINTS = 100;
+    private static final int NUM_POINTS = 200;
     private final Renderable.Layer layer = Renderable.Layer.BACKGROUND;
 
     @Override
