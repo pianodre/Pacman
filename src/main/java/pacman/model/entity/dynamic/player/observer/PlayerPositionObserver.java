@@ -15,4 +15,5 @@ public interface PlayerPositionObserver {
      */
     void update(Vector2D position);
     void update(Direction direction);
+    void updateBlinky(Vector2D blinkyPosition);
 }

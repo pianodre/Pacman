@@ -6,7 +6,7 @@ import pacman.model.entity.dynamic.physics.Vector2D;
 
 public class ClydeMovementStrategy implements MovementStrategy {
 
-    public Vector2D chase(GhostImpl ghost, Vector2D playerPosition, Direction playerDirection, Vector2D targetCorner) {
+    public Vector2D chase(GhostImpl ghost, Vector2D playerPosition, Direction playerDirection, Vector2D targetCorner, Vector2D blinkyPosition) {
         // Cylde's (Orange Ghost) specific chase logic: target is Pac-Man's position
         
         Vector2D cyldePosition = ghost.getPosition();

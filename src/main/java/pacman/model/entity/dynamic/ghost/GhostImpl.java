@@ -23,7 +23,8 @@ public class GhostImpl implements Ghost {
     private KinematicState kinematicState;
     private GhostMode ghostMode;
     private Vector2D targetLocation;
-    private Vector2D playerPosition = new Vector2D(0, 0);;
+    private Vector2D playerPosition = new Vector2D(0, 0);
+    private Vector2D blinkyPosition;
     private Direction playerDirection;
     private Direction currentDirection;
     private Set<Direction> possibleDirections;
@@ -90,7 +91,7 @@ public class GhostImpl implements Ghost {
     private Vector2D getTargetLocation() { 
     // System.out.println("Player Position updated to: " + playerPosition); // PLAYER POSITION TEST
     return switch (ghostMode) {
-        case CHASE -> movementStrategy.chase(this, playerPosition, playerDirection, targetCorner);
+        case CHASE -> movementStrategy.chase(this, playerPosition, playerDirection, targetCorner, blinkyPosition);
         case SCATTER -> targetCorner;
     };
 }
@@ -155,6 +156,11 @@ public class GhostImpl implements Ghost {
     @Override
     public void update(Direction playerDirection) {
         this.playerDirection = playerDirection;
+    }
+
+    @Override
+    public void updateBlinky(Vector2D blinkyPosition) {
+        this.blinkyPosition = blinkyPosition;
     }
 
     @Override

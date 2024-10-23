@@ -6,6 +6,6 @@ import pacman.model.entity.dynamic.physics.Vector2D;
 
 public interface MovementStrategy {
 
-    Vector2D chase(GhostImpl ghost, Vector2D playerPosition, Direction playerDirection, Vector2D targetCorner);
+    Vector2D chase(GhostImpl ghost, Vector2D playerPosition, Direction playerDirection, Vector2D targetCorner, Vector2D blinkyPosition);
     
 }

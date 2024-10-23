@@ -286,4 +286,10 @@ public class LevelImpl implements Level {
     public Direction getPacmanDirection() {
         return player.getDirection();
     }
+
+    @Override
+    public Vector2D getBlinkyPosition() {
+        return ghosts.get(0).getPosition();
+        // Blinky is always the first ghost added because it reads left to right
+    }
 }

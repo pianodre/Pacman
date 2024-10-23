@@ -112,4 +112,11 @@ public interface Level extends LevelStateSubject {
      * @return the direction of Pac-Man as a Direction
      */
     Direction getPacmanDirection();
+
+    /**
+     * Gets the current position of Blinky.
+     *
+     * @return the position of Blinky as a Vector2D
+     */
+    Vector2D getBlinkyPosition();
 }
