@@ -150,6 +150,7 @@ public class GameEngineImpl implements GameEngine {
             if (renderable instanceof Ghost) {
                 Ghost ghost = (Ghost) renderable;
                 ghost.update(currentLevel.getPacmanPosition()); // Pass Pac-Man's position to ghost
+                ghost.update(currentLevel.getPacmanDirection()); // Pass Pac-Man's position to ghost
             }
         }
     }

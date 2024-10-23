@@ -1,6 +1,7 @@
 package pacman.model.level;
 
 import pacman.model.entity.Renderable;
+import pacman.model.entity.dynamic.physics.Direction;
 import pacman.model.entity.dynamic.physics.Vector2D;
 import pacman.model.entity.staticentity.collectable.Collectable;
 import pacman.model.level.observer.LevelStateSubject;
@@ -104,4 +105,11 @@ public interface Level extends LevelStateSubject {
      * @return the position of Pac-Man as a Vector2D
      */
     Vector2D getPacmanPosition();
+
+    /**
+     * Gets the current direection of Pac-Man.
+     *
+     * @return the direction of Pac-Man as a Direction
+     */
+    Direction getPacmanDirection();
 }

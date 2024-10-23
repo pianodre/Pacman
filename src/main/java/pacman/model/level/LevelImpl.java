@@ -7,6 +7,7 @@ import pacman.model.entity.Renderable;
 import pacman.model.entity.dynamic.DynamicEntity;
 import pacman.model.entity.dynamic.ghost.Ghost;
 import pacman.model.entity.dynamic.ghost.GhostMode;
+import pacman.model.entity.dynamic.physics.Direction;
 import pacman.model.entity.dynamic.physics.PhysicsEngine;
 import pacman.model.entity.dynamic.physics.Vector2D;
 import pacman.model.entity.dynamic.player.Controllable;
@@ -278,5 +279,11 @@ public class LevelImpl implements Level {
     @Override
     public Vector2D getPacmanPosition() {
         return player.getPosition();
+    }
+
+    // Added method to get Pacman's direction
+    @Override
+    public Direction getPacmanDirection() {
+        return player.getDirection();
     }
 }
