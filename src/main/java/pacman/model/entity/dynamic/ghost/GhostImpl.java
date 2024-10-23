@@ -89,7 +89,7 @@ public class GhostImpl implements Ghost {
     private Vector2D getTargetLocation() { 
     // System.out.println("Player Position updated to: " + playerPosition); // PLAYER POSITION TEST
     return switch (ghostMode) {
-        case CHASE -> movementStrategy.chase(this, playerPosition);
+        case CHASE -> movementStrategy.chase(this, playerPosition, targetCorner);
         case SCATTER -> targetCorner;
     };
 }
@@ -130,7 +130,7 @@ public class GhostImpl implements Ghost {
         // Ensure direction is switched
         currentDirectionCount = minimumDirectionCount;
 
-        System.out.println("Ghost mode changed to: " + ghostMode);
+        // System.out.println("Ghost mode changed to: " + ghostMode); // Ghost Mode Print Statement
     }
 
     @Override
@@ -145,6 +145,7 @@ public class GhostImpl implements Ghost {
         }
     }
 
+    // Updating the ghost in gameEngine updateGhost() method
     @Override
     public void update(Vector2D playerPosition) {
         this.playerPosition = playerPosition;
