@@ -104,6 +104,7 @@ public class LevelImpl implements Level {
 
     @Override
     public void tick() {
+        // System.out.println(tickCount);
         if (this.gameState != GameState.IN_PROGRESS) {
 
             if (tickCount >= START_LEVEL_TIME) {
@@ -113,16 +114,28 @@ public class LevelImpl implements Level {
 
         } else {
 
-            if (tickCount == modeLengths.get(currentGhostMode)) {
-
-                // update ghost mode
+            if (currentGhostMode == GhostMode.FRIGHTENED) {
+                // Check if the Frightened mode has reached its duration
+                if (tickCount >= modeLengths.get(GhostMode.FRIGHTENED)) {
+                    // After Frightened mode, return to previous mode (CHASE or SCATTER)
+                    this.currentGhostMode = GhostMode.getNextGhostMode(GhostMode.FRIGHTENED);
+                    System.out.println("Current Ghost Mode: " + currentGhostMode);
+                    for (Ghost ghost : this.ghosts) {
+                        ghost.setGhostMode(this.currentGhostMode);
+                    }
+                    tickCount = 0;
+                }
+            } else if (tickCount >= modeLengths.get(currentGhostMode)) {
+                // Update to the next ghost mode (CHASE or SCATTER)
                 this.currentGhostMode = GhostMode.getNextGhostMode(currentGhostMode);
+                System.out.println("Current Ghost Mode: " + currentGhostMode);
                 for (Ghost ghost : this.ghosts) {
                     ghost.setGhostMode(this.currentGhostMode);
                 }
-
                 tickCount = 0;
             }
+            
+            
 
             if (tickCount % Pacman.PACMAN_IMAGE_SWAP_TICK_COUNT == 0) {
                 this.player.switchImage();
@@ -180,14 +193,26 @@ public class LevelImpl implements Level {
         notifyObserversWithScoreChange(collectable.getPoints());
         this.collectables.remove(collectable);
 
-        // Test for Power Pellet Collection here for Fright Mode 
-        // Check the type of collectable to print the pellet type
+        // Check for Power Pellet Collection to trigger Frightened mode
         if (collectable instanceof PowerPellet) {
             System.out.println("Power Pellet collected: " + collectable.getClass().getSimpleName());
+            // Switch all ghosts to FRIGHTENED mode
+            switchGhostsToFrightenedMode();
         } else {
-            System.out.println("Regular Pellet collected: " + collectable.getClass().getSimpleName());
+            // System.out.println("Regular Pellet collected: " + collectable.getClass().getSimpleName());
         }
     }
+
+    private void switchGhostsToFrightenedMode() {
+        for (Ghost ghost : this.ghosts) {
+            ghost.setGhostMode(GhostMode.FRIGHTENED);
+        }
+    
+        // You may want to set a timer or counter to revert the ghosts back to normal after some time
+        tickCount = 0; // Reset the tick count to manage frightened mode duration
+    }
+    
+
 
     @Override
     public void handleLoseLife() {

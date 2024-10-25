@@ -155,6 +155,9 @@ public class GhostImpl implements Ghost {
         if (ghostMode != GhostMode.FRIGHTENED) {
             setImage(image); // Reset to default image if not in frightened mode
         }
+        if (ghostMode == GhostMode.FRIGHTENED) {
+            setImage(frightImage);
+        }
 
         // Ensure direction is switched
         currentDirectionCount = minimumDirectionCount;
@@ -173,6 +176,7 @@ public class GhostImpl implements Ghost {
     @Override
     public void collideWith(Level level, Renderable renderable) {
         if (level.isPlayer(renderable)) {
+            System.out.println("pacman hit a ghost");
             level.handleLoseLife();
         }
     }
