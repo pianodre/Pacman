@@ -1,6 +1,7 @@
 package pacman.model.level;
 
 import pacman.model.entity.Renderable;
+import pacman.model.entity.dynamic.ghost.Ghost;
 import pacman.model.entity.dynamic.physics.Direction;
 import pacman.model.entity.dynamic.physics.Vector2D;
 import pacman.model.entity.staticentity.collectable.Collectable;
@@ -92,6 +93,12 @@ public interface Level extends LevelStateSubject {
      * Level resets dynamic entities to starting positions.
      */
     void handleLoseLife();
+
+    /**
+     * Instructs the level to reset the ghost when eaten by the player.
+     * Level resets dynamic entities to starting positions.
+     */
+    void resetFrightenedGhost(Ghost ghost);
 
     /**
      * Instructs the level to handle the game ending.

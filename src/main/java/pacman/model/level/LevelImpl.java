@@ -227,6 +227,14 @@ public class LevelImpl implements Level {
     }
 
     @Override
+    public void resetFrightenedGhost(Ghost ghost) {
+        if (gameState == GameState.IN_PROGRESS) {
+            ghost.reset();
+            // tickCount = 0;
+        }
+    }
+
+    @Override
     public void moveLeft() {
         player.left();
     }

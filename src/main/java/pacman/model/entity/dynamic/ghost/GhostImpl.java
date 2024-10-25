@@ -175,9 +175,16 @@ public class GhostImpl implements Ghost {
 
     @Override
     public void collideWith(Level level, Renderable renderable) {
-        if (level.isPlayer(renderable)) {
-            System.out.println("pacman hit a ghost");
-            level.handleLoseLife();
+        if (ghostMode != GhostMode.FRIGHTENED) {
+            if (level.isPlayer(renderable)) {
+                System.out.println("pacman hit a ghost");
+                level.handleLoseLife();
+            }
+        } else {
+            if (level.isPlayer(renderable)) {
+                System.out.println("Ghost is FRIGHTENED");
+                level.resetFrightenedGhost(this);
+            }
         }
     }
 
