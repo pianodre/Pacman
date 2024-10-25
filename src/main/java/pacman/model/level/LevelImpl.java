@@ -14,6 +14,7 @@ import pacman.model.entity.dynamic.player.Controllable;
 import pacman.model.entity.dynamic.player.Pacman;
 import pacman.model.entity.staticentity.StaticEntity;
 import pacman.model.entity.staticentity.collectable.Collectable;
+import pacman.model.entity.staticentity.collectable.PowerPellet;
 import pacman.model.level.observer.LevelStateObserver;
 import pacman.model.maze.Maze;
 
@@ -173,12 +174,19 @@ public class LevelImpl implements Level {
         return (collectables.contains(renderable) && ((Collectable) renderable).isCollectable());
     }
 
-
     @Override
     public void collect(Collectable collectable) {
         this.points += collectable.getPoints();
         notifyObserversWithScoreChange(collectable.getPoints());
         this.collectables.remove(collectable);
+
+        // Test for Power Pellet Collection here for Fright Mode 
+        // Check the type of collectable to print the pellet type
+        if (collectable instanceof PowerPellet) {
+            System.out.println("Power Pellet collected: " + collectable.getClass().getSimpleName());
+        } else {
+            System.out.println("Regular Pellet collected: " + collectable.getClass().getSimpleName());
+        }
     }
 
     @Override

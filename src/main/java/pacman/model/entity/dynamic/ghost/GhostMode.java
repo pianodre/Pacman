@@ -5,7 +5,8 @@ package pacman.model.entity.dynamic.ghost;
  */
 public enum GhostMode {
     SCATTER,
-    CHASE;
+    CHASE,
+    FRIGHTENED;
 
     /**
      * Ghosts alternate between SCATTER and CHASE mode normally

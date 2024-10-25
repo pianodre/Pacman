@@ -6,6 +6,10 @@ import pacman.model.entity.dynamic.physics.Vector2D;
 
 public class PinkyMovementStrategy implements MovementStrategy {
     
+    /*
+    * Four grid spaces ahead of Pac-Man (based on Pac-Man’s current direction)
+    */
+
     public Vector2D chase(GhostImpl ghost, Vector2D playerPosition, Direction playerDirection, Vector2D targetCorner, Vector2D blinkyPosition) {
         // Blinky's specific chase logic: target is Pac-Man's position
         // System.out.println("Pinky is chasing Pac-Man at position: " + playerPosition);
@@ -36,8 +40,9 @@ public class PinkyMovementStrategy implements MovementStrategy {
         return targetTile;
     }
 
-}
 
-/*
- * Four grid spaces ahead of Pac-Man (based on Pac-Man’s current direction)
-*/
+    public Vector2D fright(GhostImpl ghost) {
+        return null;
+    }
+
+}

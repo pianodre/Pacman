@@ -32,6 +32,8 @@ public class GhostImpl implements Ghost {
     private int currentDirectionCount = 0;
     private String name;
     private MovementStrategy movementStrategy;
+    private Image frightImage = new Image("maze/ghosts/frightened.png"); // Frightened mode image
+    private Image currentImage; // Tracks the current image
 
     public GhostImpl(Image image, BoundingBox boundingBox, KinematicState kinematicState, GhostMode ghostMode, Vector2D targetCorner, MovementStrategy movementStrategy) {
         this.image = image;
@@ -44,8 +46,8 @@ public class GhostImpl implements Ghost {
         this.targetLocation = getTargetLocation();
         this.currentDirection = null;
         this.movementStrategy = movementStrategy; // Set the movement strategy
+        this.currentImage = image; // Initialize current image to the default image
     }
-
 
     @Override
     public void setSpeeds(Map<GhostMode, Double> speeds) {
@@ -54,7 +56,7 @@ public class GhostImpl implements Ghost {
 
     @Override
     public Image getImage() {
-        return image;
+        return currentImage; // Return the current image
     }
 
     @Override
@@ -85,16 +87,36 @@ public class GhostImpl implements Ghost {
             case DOWN -> kinematicState.down();
         }
     }
+
     /*
      * Passes in the ghost mode so each movementStrategy can be used
      */
-    private Vector2D getTargetLocation() { 
-    // System.out.println("Player Position updated to: " + playerPosition); // PLAYER POSITION TEST
-    return switch (ghostMode) {
-        case CHASE -> movementStrategy.chase(this, playerPosition, playerDirection, targetCorner, blinkyPosition);
-        case SCATTER -> targetCorner;
-    };
-}
+    private Vector2D getTargetLocation() {
+        // System.out.println("Player Position updated to: " + playerPosition); // PLAYER POSITION TEST
+        return switch (ghostMode) {
+            case CHASE -> movementStrategy.chase(this, playerPosition, playerDirection, targetCorner, blinkyPosition);
+            case SCATTER -> targetCorner;
+            case FRIGHTENED -> {
+                setImage(frightImage); // Update the image to frightened mode
+                yield getRandomTargetLocation();
+            }
+            default -> throw new IllegalStateException("Unexpected ghost mode: " + ghostMode); // Throws error in case of invalid ghost mode
+        };
+    }
+
+    // Fright mode logic
+    private Vector2D getRandomTargetLocation() {
+        List<Direction> directions = new ArrayList<>(possibleDirections);
+        if (directions.isEmpty()) {
+            return kinematicState.getPosition(); // Stay in place if no valid directions
+        }
+
+        // Select a random direction from the possible directions
+        Direction randomDirection = directions.get(new Random().nextInt(directions.size()));
+
+        // Return the position the ghost would move to in that direction
+        return kinematicState.getPotentialPosition(randomDirection);
+    }
 
     private Direction selectDirection(Set<Direction> possibleDirections) {
         if (possibleDirections.isEmpty()) {
@@ -129,10 +151,18 @@ public class GhostImpl implements Ghost {
     public void setGhostMode(GhostMode ghostMode) {
         this.ghostMode = ghostMode;
         kinematicState.setSpeed(speeds.get(ghostMode));
+
+        if (ghostMode != GhostMode.FRIGHTENED) {
+            setImage(image); // Reset to default image if not in frightened mode
+        }
+
         // Ensure direction is switched
         currentDirectionCount = minimumDirectionCount;
+    }
 
-        // System.out.println("Ghost mode changed to: " + ghostMode); // Ghost Mode Print Statement
+    @Override
+    public GhostMode getGhostMode() {
+        return ghostMode;
     }
 
     @Override
@@ -147,7 +177,6 @@ public class GhostImpl implements Ghost {
         }
     }
 
-    // Updating the ghost in gameEngine updateGhost() method
     @Override
     public void update(Vector2D playerPosition) {
         this.playerPosition = playerPosition;
@@ -207,6 +236,7 @@ public class GhostImpl implements Ghost {
         boundingBox.setTopLeft(startingPosition);
         ghostMode = GhostMode.SCATTER;
         currentDirectionCount = minimumDirectionCount;
+        setImage(image); // Reset the image to the default image when reset
     }
 
     @Override
@@ -230,6 +260,10 @@ public class GhostImpl implements Ghost {
 
     public String getName() {
         return name;
+    }
+
+    private void setImage(Image image) {
+        this.currentImage = image; // Update the current image
     }
 
 }
