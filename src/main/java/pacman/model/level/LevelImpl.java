@@ -135,7 +135,6 @@ public class LevelImpl implements Level {
                 tickCount = 0;
             }
             
-            
 
             if (tickCount % Pacman.PACMAN_IMAGE_SWAP_TICK_COUNT == 0) {
                 this.player.switchImage();
@@ -229,9 +228,8 @@ public class LevelImpl implements Level {
     @Override
     public void resetFrightenedGhost(Ghost ghost) {
         if (gameState == GameState.IN_PROGRESS) {
-            // point testing: notifyObserversWithScoreChange(200);
             ghost.reset();
-            // tickCount = 0;
+            ghost.setGhostMode(GhostMode.CHASE);
         }
     }
 

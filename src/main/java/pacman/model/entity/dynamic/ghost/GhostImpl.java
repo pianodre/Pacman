@@ -251,6 +251,7 @@ public class GhostImpl implements Ghost {
         ghostMode = GhostMode.SCATTER;
         currentDirectionCount = minimumDirectionCount;
         setImage(image); // Reset the image to the default image when reset
+        System.out.println("GHOST RESET RAN");
     }
 
     @Override
