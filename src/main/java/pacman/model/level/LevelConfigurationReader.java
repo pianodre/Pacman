@@ -36,7 +36,7 @@ public class LevelConfigurationReader {
         JSONObject modeLengthsObject = (JSONObject) levelConfiguration.get("modeLengths");
         
         // Define ticks per second
-        final int TICKS_PER_SECOND = 30;
+        final int TICKS_PER_SECOND = 15;
         
         // Convert ticks to seconds (lengths in seconds will be in whole seconds, so use int division)
         ghostModeLengths.put(GhostMode.CHASE, ((Number) modeLengthsObject.get("chase")).intValue() * TICKS_PER_SECOND);

@@ -34,6 +34,8 @@ public class GhostImpl implements Ghost {
     private MovementStrategy movementStrategy;
     private Image frightImage = new Image("maze/ghosts/frightened.png"); // Frightened mode image
     private Image currentImage; // Tracks the current image
+    private static final int[] GHOST_SCORES = {200, 400, 800, 1600};
+    private int ghostsEatenDuringFrightenedMode = 0;
 
     public GhostImpl(Image image, BoundingBox boundingBox, KinematicState kinematicState, GhostMode ghostMode, Vector2D targetCorner, MovementStrategy movementStrategy) {
         this.image = image;
@@ -183,6 +185,7 @@ public class GhostImpl implements Ghost {
         } else {
             if (level.isPlayer(renderable)) {
                 System.out.println("Ghost is FRIGHTENED");
+                level.notifyObserversWithScoreChange(GHOST_SCORES[ghostsEatenDuringFrightenedMode]);
                 level.resetFrightenedGhost(this);
             }
         }

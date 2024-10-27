@@ -229,6 +229,7 @@ public class LevelImpl implements Level {
     @Override
     public void resetFrightenedGhost(Ghost ghost) {
         if (gameState == GameState.IN_PROGRESS) {
+            // point testing: notifyObserversWithScoreChange(200);
             ghost.reset();
             // tickCount = 0;
         }
