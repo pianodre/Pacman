@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.concurrent.*;
 
 /**
  * Concrete implement of Pac-Man level
@@ -42,6 +43,7 @@ public class LevelImpl implements Level {
     private GameState gameState;
     private List<Renderable> collectables;
     private GhostMode currentGhostMode;
+    private int reset = 0;
 
     public LevelImpl(JSONObject levelConfiguration,
                      Maze maze) {
@@ -104,7 +106,7 @@ public class LevelImpl implements Level {
 
     @Override
     public void tick() {
-        // System.out.println(tickCount);
+        // System.out.println(gameState + " " + tickCount);
         if (this.gameState != GameState.IN_PROGRESS) {
 
             if (tickCount >= START_LEVEL_TIME) {
@@ -125,8 +127,9 @@ public class LevelImpl implements Level {
                     }
                     tickCount = 0;
                 }
-            } else if (tickCount >= modeLengths.get(currentGhostMode)) {
+            } else if (tickCount >= modeLengths.get(currentGhostMode) || reset == 1) {
                 // Update to the next ghost mode (CHASE or SCATTER)
+                reset = 0;
                 this.currentGhostMode = GhostMode.getNextGhostMode(currentGhostMode);
                 System.out.println("Current Ghost Mode: " + currentGhostMode);
                 for (Ghost ghost : this.ghosts) {
@@ -222,6 +225,7 @@ public class LevelImpl implements Level {
             setNumLives(numLives - 1);
             setGameState(GameState.READY);
             tickCount = 0;
+            reset = 1;
         }
     }
 
@@ -229,7 +233,13 @@ public class LevelImpl implements Level {
     public void resetFrightenedGhost(Ghost ghost) {
         if (gameState == GameState.IN_PROGRESS) {
             ghost.reset();
-            ghost.setGhostMode(GhostMode.CHASE);
+
+            // Create a scheduler to run the mode change after 1 second
+            ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+            scheduler.schedule(() -> {
+                ghost.setGhostMode(GhostMode.CHASE);
+                scheduler.shutdown(); // Shutdown the scheduler after the task is done
+            }, 1, TimeUnit.SECONDS);
         }
     }
 
